@@ -1,6 +1,8 @@
 package com.iam.gesconsspring.entities;
 
 import javax.persistence.*;
+import javax.validation.constraints.NotBlank;
+import javax.validation.constraints.NotEmpty;
 import java.io.Serializable;
 import java.util.Date;
 
@@ -9,8 +11,10 @@ public class Projet implements Serializable {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Long id;
+    @NotBlank(message = "Le nom du projet est obligatoire")
     private String nom;
     @Column(unique = true, nullable = false)
+    @NotBlank(message = "Le code du projet est obligatoire")
     private String code;
     private String description;
     @Temporal(TemporalType.DATE)
