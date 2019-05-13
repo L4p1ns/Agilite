@@ -2,6 +2,7 @@ package com.iam.gesconsspring.entities;
 
 import javax.persistence.*;
 import javax.validation.constraints.NotBlank;
+import javax.validation.constraints.Size;
 import java.io.Serializable;
 import java.util.Date;
 
@@ -13,6 +14,7 @@ public class Projet implements Serializable {
     @NotBlank(message = "Le nom du projet est obligatoire")
     private String nom;
     @Column(unique = true, nullable = false)
+    @Size(min = 4, max = 5, message = "Le code doit etre compris entre 4 et 5 caracter")
     @NotBlank(message = "Le code du projet est obligatoire")
     private String code;
     private String description;
