@@ -1,6 +1,7 @@
 package com.iam.gesconsspring.entities;
 
 import javax.persistence.*;
+import javax.validation.constraints.Size;
 import java.io.Serializable;
 import java.util.Date;
 
@@ -11,6 +12,8 @@ public class Projet implements Serializable {
     private Long id;
     private String nom;
     @Column(unique = true, nullable = false)
+    // @Length(min = 4, max = 5)
+    @Size(min = 4, max = 5, message = "Le nom doit etre compris entre 4 et 5 caractere")
     private String code;
     private String description;
     @Temporal(TemporalType.DATE)
