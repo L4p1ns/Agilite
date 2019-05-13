@@ -21,8 +21,4 @@ public interface ProjetRepository extends CrudRepository<Projet, Long> {
     Projet findByCode(String code);
     boolean existsByCode(String code);
 
-//    @RestResource(path = "/byNom")
-//    public List<Projet> findByNomContains(@Param("mc") String nom);
-//    @RestResource(path = "/byNomPage")
-//    public Page<Projet> findByNomContains(@Param("mc") String nom, Pageable pageable);
 }

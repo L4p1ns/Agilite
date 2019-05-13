@@ -2,6 +2,7 @@ package com.iam.gesconsspring.service;
 
 import com.iam.gesconsspring.dao.ProjetRepository;
 import com.iam.gesconsspring.entities.Projet;
+import com.iam.gesconsspring.exception.ProjetException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -11,7 +12,12 @@ public class ProjetService {
     private ProjetRepository projetRepository;
 
     public Projet saveOrUpdate(Projet projet) {
-        return projetRepository.save(projet);
+        try {
+            projet.setCode(projet.getCode().toUpperCase());
+            return projetRepository.save(projet);
+        } catch (Exception e) {
+            throw new ProjetException("Code projet: "+projet.getCode().toUpperCase()+" existe deja !!!");
+        }
     }
 
     public boolean verifyCode(String code) {

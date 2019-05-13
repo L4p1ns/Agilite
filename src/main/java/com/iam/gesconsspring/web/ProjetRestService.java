@@ -1,17 +1,15 @@
 package com.iam.gesconsspring.web;
 
 import com.iam.gesconsspring.entities.Projet;
+import com.iam.gesconsspring.service.MapValidationErrorService;
 import com.iam.gesconsspring.service.ProjetService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.BindingResult;
-import org.springframework.validation.FieldError;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
-import java.util.HashMap;
-import java.util.Map;
 
 @RestController
 @RequestMapping("/api/projets")
@@ -19,23 +17,21 @@ import java.util.Map;
 public class ProjetRestService {
     @Autowired
     private ProjetService projetService;
+    @Autowired
+    private MapValidationErrorService mapValidationErrorService;
 
     // Add Projetct
     @PostMapping("")
     public ResponseEntity<?> addProjet(@Valid @RequestBody Projet projet, BindingResult result) {
 
-        if (result.hasErrors()) {
-            Map<String, String> errorMap = new HashMap<>();
-
-            for (FieldError error : result.getFieldErrors()) {
-                errorMap.put(error.getField(), error.getDefaultMessage());
-            }
-            return new ResponseEntity<Map<String, String>>(errorMap, HttpStatus.BAD_REQUEST);
+        ResponseEntity<?> errorMap = mapValidationErrorService.mapValidationService(result);
+        if (errorMap != null) {
+            return errorMap;
         }
         boolean verif = projetService.verifyCode(projet.getCode());
         if (verif) {
             return new ResponseEntity<>("Ce code existe deja", HttpStatus.BAD_REQUEST);
-        }else {
+        } else {
             if (projet.getDateFin() != null && projet.getDateDebut() != null) {
                 if (projet.getDateFin().after(projet.getDateDebut())) {
                     Projet projet1 = projetService.saveOrUpdate(projet);
