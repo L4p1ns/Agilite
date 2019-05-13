@@ -19,6 +19,7 @@ import java.util.List;
 public interface ProjetRepository extends CrudRepository<Projet, Long> {
     //Projet findById(Long id);
     Projet findByCode(String code);
+    boolean existsByCode(String code);
 
 //    @RestResource(path = "/byNom")
 //    public List<Projet> findByNomContains(@Param("mc") String nom);

@@ -32,15 +32,20 @@ public class ProjetRestService {
             }
             return new ResponseEntity<Map<String, String>>(errorMap, HttpStatus.BAD_REQUEST);
         }
-        if (projet.getDateFin() != null && projet.getDateDebut() != null) {
-            if (projet.getDateFin().after(projet.getDateDebut())) {
-                Projet projet1 = projetService.saveOrUpdate(projet);
-                return new ResponseEntity<>(projet1, HttpStatus.CREATED);
+        boolean verif = projetService.verifyCode(projet.getCode());
+        if (verif) {
+            return new ResponseEntity<>("Ce code existe deja", HttpStatus.BAD_REQUEST);
+        }else {
+            if (projet.getDateFin() != null && projet.getDateDebut() != null) {
+                if (projet.getDateFin().after(projet.getDateDebut())) {
+                    Projet projet1 = projetService.saveOrUpdate(projet);
+                    return new ResponseEntity<>(projet1, HttpStatus.CREATED);
+                } else {
+                    return new ResponseEntity<>("La date de fin doit superieur a la date de debut ", HttpStatus.BAD_REQUEST);
+                }
             } else {
-                return new ResponseEntity<>("La date de fin doit superieur a la date de debut ", HttpStatus.BAD_REQUEST);
+                return new ResponseEntity<>("Les champs date debut et date fin sont obligation ", HttpStatus.BAD_REQUEST);
             }
-        } else {
-            return new ResponseEntity<>("Les champs date debut et date fin sont obligation ", HttpStatus.BAD_REQUEST);
         }
     }
 

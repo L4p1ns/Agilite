@@ -14,6 +14,10 @@ public class ProjetService {
         return projetRepository.save(projet);
     }
 
+    public boolean verifyCode(String code) {
+        return projetRepository.existsByCode(code);
+    }
+
     public Iterable<Projet> findAll() {
         return projetRepository.findAll();
     }
